@@ -1,74 +1,83 @@
 import React from 'react';
 import Terminal from './Terminal';
-import { Map, List, fromJS } from 'immutable';
+import { List, Map, fromJS } from 'immutable';
+import { store } from '../index';
+import { addToQueue, removeFromQueue, updateHistory } from '../action_creators';
 
 const styles = {
-  TerminalContainer: {
+  terminal: {
+    fontFamily: ["Lucida Console", "Lucida Sans Typewriter", "monaco", "Bitstream Vera Sans Mono", "monospace"],
     position: "absolute",
     left: "50%",
     top: "50%",
     transform: "translate(-50%, -50%)",
-    width: "33%",
+    width: "40%",
     height: "50%"
   }
 }
 
 const dialogs = fromJS({
-  hi: "Hi there, I'm Joey."
+  about: [
+    "Hi there, I'm Joey."
+  ]
 })
 
-const inputChoices = List([ "hi", "help", "about", "skills", "contact"])
+const inputChoices = List.of("about");
 
 export default class App extends React.Component {
   constructor() {
     super()
     this.state = {
       history: List(),
-      currentLine: ""
+      text: "",
+      input: ""
     }
+
+    this.handleInputChange = input => {
+      if (inputChoices.indexOf(input) > -1) {
+        store.dispatch(addToQueue(dialogs.get(input)));
+      }
+    }
+
+    this.handleStateChange = () => {
+      this.setState({
+        history: store.getState().get('history')
+      });
+    }
+
+    this.interval = setInterval( () => {
+      const line = store.getState().getIn(['queue', 0]);
+      if (line) {
+        this.setState({
+          text: this.state.text + line.charAt(this.state.text.length)
+        });
+        if (this.state.text === line) {
+          store.dispatch(updateHistory(line));
+          store.dispatch(removeFromQueue());
+          this.setState({
+            text: "",
+            input: ""
+          });
+        }
+      }
+    }, 40)
   }
 
   componentDidMount() {
-    this.handleInputChange("hi");
+    store.subscribe(this.handleStateChange);
+    this.handleInputChange("about");
   }
 
   componentWillUnmount() {
     clearInterval(this.interval);
   }
 
-  _printLine(input) {
-    const line = dialogs.get(input)
-    this.interval = setInterval( () => {
-      if (this.state.currentLine !== line) {
-        this.setState({
-          currentLine: this.state.currentLine + line.charAt(this.state.currentLine.length)
-        })
-      } else {
-        let history = this.state.history.concat(line);
-        if (this.state.history.size > 5) {
-          history = this.state.history.shift()
-        }
-        this.setState({
-          currentLine: "",
-          history: history
-        });
-        clearInterval(this.interval);
-      }
-    }, 30)
-  }
-
-  handleInputChange(input) {
-    this._printLine(input);
-  }
-
   render() {
     return(
-      <div>
-        <div style={styles.TerminalContainer}>
-          <Terminal currentLine={this.state.currentLine}
-                    history={this.state.history}
-                    onInputChange={this.handleInputChange} />
-        </div>
+      <div style={styles.terminal}>
+        <Terminal text={this.state.text}
+                  history={this.state.history}
+                  onInputChange={this.handleInputChange} />
       </div>
     )
   }

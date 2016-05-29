@@ -14,7 +14,7 @@ const styles = {
 }
 
 const dialogs = fromJS({
-  hi: "Hi there, I'm Joey.",
+  hi: "Hi there, I'm Joey."
 })
 
 const inputChoices = List([ "hi", "help", "about", "skills", "contact"])
@@ -23,6 +23,7 @@ export default class App extends React.Component {
   constructor() {
     super()
     this.state = {
+      history: List(),
       currentLine: ""
     }
   }
@@ -42,6 +43,16 @@ export default class App extends React.Component {
         this.setState({
           currentLine: this.state.currentLine + line.charAt(this.state.currentLine.length)
         })
+      } else {
+        let history = this.state.history.concat(line);
+        if (this.state.history.size > 5) {
+          history = this.state.history.shift()
+        }
+        this.setState({
+          currentLine: "",
+          history: history
+        });
+        clearInterval(this.interval);
       }
     }, 30)
   }
@@ -55,6 +66,7 @@ export default class App extends React.Component {
       <div>
         <div style={styles.TerminalContainer}>
           <Terminal currentLine={this.state.currentLine}
+                    history={this.state.history}
                     onInputChange={this.handleInputChange} />
         </div>
       </div>

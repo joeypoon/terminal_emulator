@@ -7,7 +7,7 @@ const INITIAL_STATE = fromJS({
 
 function updateHistory(historyState = List(), line) {
   let nextHistoryState = historyState.concat(line);
-  if (historyState.size > 7) {
+  if (historyState.size > 9) {
     nextHistoryState = nextHistoryState.shift();
   }
   return nextHistoryState;
@@ -18,7 +18,9 @@ export default function reducer(state = INITIAL_STATE, action) {
     case 'UPDATE_HISTORY':
       return state.set('history', updateHistory(state.get('history'), action.line));
     case 'ADD_TO_QUEUE':
-      return state.set('queue', state.get('queue').concat(action.lines));
+      return state.set('queue', state.get('queue')
+                                     .concat(action.lines)
+                                     .concat(""));
     case 'REMOVE_FROM_QUEUE':
       return state.set('queue', state.get('queue').shift());
     return state;

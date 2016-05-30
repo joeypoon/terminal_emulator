@@ -1,13 +1,5 @@
 import React, { PropTypes } from 'react';
 
-const styles = {
-  inputBox: {
-    border: "none",
-    color: "white",
-    outline: "none"
-  }
-}
-
 export default class Terminal extends React.Component {
   constructor() {
     super()
@@ -29,10 +21,8 @@ export default class Terminal extends React.Component {
         }
         <span>{this.props.text}</span>
         <br />
-        <br />
-        <span>{this.props.input}</span>
         <input type="text"
-               style={styles.inputBox}
+               className="inputBox"
                ref="inputBox"
                autoFocus={true}
                onChange={this.props.onInputChange} />
@@ -43,7 +33,6 @@ export default class Terminal extends React.Component {
 
 Terminal.propTypes = {
   text: PropTypes.string.isRequired,
-  input: PropTypes.string.isRequired,
   history: PropTypes.object.isRequired,
   onInputChange: PropTypes.func.isRequired
 }

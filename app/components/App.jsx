@@ -4,23 +4,6 @@ import { List, Map, fromJS } from 'immutable';
 import { store } from '../index';
 import { addToQueue, removeFromQueue, updateHistory } from '../action_creators';
 
-const styles = {
-  terminal: {
-    fontFamily: ["Lucida Console", "Lucida Sans Typewriter", "monaco", "Bitstream Vera Sans Mono", "monospace"],
-    position: "absolute",
-    left: "50%",
-    top: "50%",
-    transform: "translate(-50%, -50%)",
-    width: "40%",
-    height: "50%",
-    color: "#2c3e50"
-  }
-}
-
-function getKeys(map) {
-  return Object.keys(map.toJS());
-}
-
 const inputChoices = [
   'help', 'skills', 'contact',
   'portfolio', 'resume', 'github', 'twitter',
@@ -65,8 +48,7 @@ export default class App extends React.Component {
     super()
     this.state = {
       history: List(),
-      text: "",
-      input: ""
+      text: ""
     }
 
     this.handleInputChange = e => {
@@ -81,9 +63,6 @@ export default class App extends React.Component {
         } else {
           store.dispatch(addToQueue(dialogs.get(input)));
         }
-        this.setState({
-          input: ""
-        });
         e.target.value = "";
       }
     }
@@ -104,8 +83,7 @@ export default class App extends React.Component {
           store.dispatch(updateHistory(line));
           store.dispatch(removeFromQueue());
           this.setState({
-            text: "",
-            input: ""
+            text: ""
           });
         }
       }
@@ -131,10 +109,9 @@ export default class App extends React.Component {
 
   render() {
     return(
-      <div style={styles.terminal}>
+      <div className="terminal">
         <Terminal text={this.state.text}
                   history={this.state.history}
-                  input={this.state.input}
                   onInputChange={this.handleInputChange} />
       </div>
     )

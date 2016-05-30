@@ -7,7 +7,7 @@ const INITIAL_STATE = fromJS({
 
 function updateHistory(historyState = List(), line) {
   let nextHistoryState = historyState.concat(line);
-  if (historyState.size > 9) {
+  if (historyState.size > 12) {
     nextHistoryState = nextHistoryState.shift();
   }
   return nextHistoryState;
@@ -23,6 +23,6 @@ export default function reducer(state = INITIAL_STATE, action) {
                                      .concat(""));
     case 'REMOVE_FROM_QUEUE':
       return state.set('queue', state.get('queue').shift());
-    return state;
   }
+  return state;
 }

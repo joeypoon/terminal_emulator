@@ -7,7 +7,7 @@ const INITIAL_STATE = fromJS({
 
 function updateHistory(historyState = List(), line) {
   let nextHistoryState = historyState.concat(line);
-  if (historyState.size > 12) {
+  if (historyState.size > 8) {
     nextHistoryState = nextHistoryState.shift();
   }
   return nextHistoryState;

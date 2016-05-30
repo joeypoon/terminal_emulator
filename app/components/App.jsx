@@ -5,10 +5,18 @@ import { store } from '../index';
 import { addToQueue, removeFromQueue, updateHistory } from '../action_creators';
 
 const inputChoices = [
-  'help', 'skills', 'contact',
-  'portfolio', 'resume', 'github', 'twitter',
-  'linkedin', 'blog'
+  'help', 'skills', 'experience', 'contact', 'links',
+  'open:linkName (eg. open:portfolio)'
 ];
+
+const links = fromJS({
+  portfolio: "http://joeypoon.com/portfolio#portfolio",
+  resume: "http://joeypoon.com/resume/",
+  github: "https://github.com/joeypoon",
+  twitter: "https://twitter.com/joeyfpoon",
+  linkedin: "https://www.linkedin.com/in/joeypoon",
+  blog: "http://joeypoon.com/blog/"
+})
 
 const dialogs = fromJS({
   intro: [
@@ -28,19 +36,23 @@ const dialogs = fromJS({
     "$ git commit -m 'git awesome.'"
   ],
 
+  experience: [
+    "Erdos Miller:",
+    "Software Engineer (July 2015 - Current)",
+    "",
+    "The Iron Yard:",
+    "Backend Engineer (May 2015 - July 2015)",
+    "",
+    "University of Houston Downtown:",
+    "Software Developer (May 2015 - July 2015)",
+  ],
+
   contact: [
     "phone: 281-942-8891",
     "email: joey@joeypoon.com"
-  ]
-})
+  ],
 
-const links = fromJS({
-  portfolio: "http://joeypoon.com/",
-  resume: "http://joeypoon.com/resume/",
-  github: "https://github.com/joeypoon",
-  twitter: "https://twitter.com/joeyfpoon",
-  linkedin: "https://www.linkedin.com/in/joeypoon",
-  blog: "http://joeypoon.com/blog/"
+  links: links.map((value, key) => `${key}: ${value}`)
 })
 
 export default class App extends React.Component {
@@ -53,10 +65,7 @@ export default class App extends React.Component {
 
     this.handleInputChange = e => {
       const input = e.target.value.toLowerCase()
-      this.setState({
-        input: input
-      });
-      if (inputChoices.indexOf(input) > -1) {
+      if (inputChoices.indexOf(input) > -1 || this._isLink(input)) {
         store.dispatch(addToQueue(`$ ${input}`))
         if (this._isLink(input)) {
           this._openLink(input)
@@ -100,11 +109,11 @@ export default class App extends React.Component {
   }
 
   _isLink(input) {
-    return !!links.get(input)
+    return !!links.get(input.split(':')[1])
   }
 
-  _openLink(link) {
-    window.open(links.get(link));
+  _openLink(input) {
+    window.open(links.get(input.split(':')[1]));
   }
 
   render() {

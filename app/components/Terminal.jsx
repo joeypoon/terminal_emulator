@@ -21,7 +21,7 @@ export default class Terminal extends React.Component {
         }
         <span>{this.props.text}</span>
         <br />
-        <input type="text"
+        $<input type="text"
                className="inputBox"
                ref="inputBox"
                autoFocus={true}

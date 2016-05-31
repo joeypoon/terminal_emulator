@@ -2,17 +2,22 @@ import React, { PropTypes } from 'react';
 
 export default class Link extends React.Component {
 
+  _getLink() {
+    const str = this.props.line;
+    const index = str.indexOf('http');
+    return str.slice(index);
+  }
+
   render() {
     return <div>
-      {this.props.text.replace(this.props.href, '')}
-      <a href={this.props.href} target="_blank">
-        {this.props.href}
+      {this.props.line.replace(this._getLink(), '')}
+      <a href={this._getLink()} target="_blank">
+        {this._getLink()}
       </a>
     </div>
   }
 }
 
 Link.propTypes = {
-  text: PropTypes.string.isRequired,
-  href: PropTypes.string.isRequired
+  line: PropTypes.string.isRequired
 };

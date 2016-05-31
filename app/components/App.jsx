@@ -2,25 +2,14 @@ import React from 'react';
 import Terminal from './Terminal';
 import { List, Map, fromJS } from 'immutable';
 import { store } from '../index';
-import { addToQueue, removeFromQueue, updateHistory } from '../action_creators';
-import { inputChoices, links, dialogs, filler } from '../data';
+import { addToQueue, removeFromQueue } from '../action_creators';
+import { inputChoices, links, dialogs, filler, MAX_LINES } from '../data';
 
 export default class App extends React.Component {
   constructor() {
     super()
     this.state = {
-      lines: List(),
-    }
-
-    this.handleInputChange = e => {
-      const input = e.target.value.toLowerCase()
-      if (inputChoices.indexOf(input) > -1) {
-        store.dispatch(addToQueue(`$ ${input}`));
-        store.dispatch(addToQueue(filler));
-        store.dispatch(addToQueue(dialogs.get(input)));
-        e.target.value = "";
-        store.dispatch(addToQueue(filler));
-      }
+      lines: List()
     }
   }
 
@@ -34,23 +23,51 @@ export default class App extends React.Component {
     clearInterval(this.interval);
   }
 
+  _verifyLinesLength() {
+    if (this.state.lines.size > MAX_LINES) {
+      this.setState({
+        lines: this.state.lines.slice(-MAX_LINES)
+      });
+    }
+  }
+
+  _startNewLine() {
+    store.dispatch(removeFromQueue());
+    this.setState({
+      lines: this.state.lines.concat("")
+    });
+  }
+
+  _appendToLastLine(line) {
+    const updatedLine = line.slice(0, this.state.lines.get(-1, "").length + 1);
+    this.setState({
+      lines: this.state.lines.set(-1, updatedLine)
+    });
+  }
+
   _startRenderingQueue() {
     this.interval = setInterval( () => {
       const line = store.getState().getIn(['queue', 0]);
       if (line !== undefined) {
         if (line === this.state.lines.last()) {
-          store.dispatch(removeFromQueue());
-          this.setState({
-            lines: this.state.lines.concat("")
-          });
+          this._startNewLine();
         } else {
-          const updatedLine = line.slice(0, this.state.lines.get(-1, "").length + 1);
-          this.setState({
-            lines: this.state.lines.set(-1, updatedLine)
-          });
+          this._appendToLastLine(line);
         }
       }
+      this._verifyLinesLength()
     }, 30)
+  }
+
+  handleInputChange(e) {
+    const input = e.target.value.toLowerCase()
+    if (inputChoices.indexOf(input) > -1) {
+      store.dispatch(addToQueue(`$ ${input}`));
+      store.dispatch(addToQueue(filler));
+      store.dispatch(addToQueue(dialogs.get(input)));
+      store.dispatch(addToQueue(filler));
+      e.target.value = "";
+    }
   }
 
   render() {

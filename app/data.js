@@ -1,6 +1,8 @@
 import { List, fromJS } from 'immutable';
 
-export const filler = '-------';
+export const filler = '-';
+
+export const MAX_LINES =  screen.width > 767 ? 15 : 10;
 
 export const inputChoices = List.of(
   'help', 'skills', 'experience', 'contact',
@@ -31,7 +33,7 @@ export const dialogs = fromJS({
   ],
 
   skills: [
-    "$ npm install react angular",
+    "$ npm install react redux angular",
     "$ rails new restful_api",
     "$ git commit -m 'git awesome.'"
   ],

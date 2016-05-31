@@ -9,67 +9,54 @@ export default class App extends React.Component {
   constructor() {
     super()
     this.state = {
-      history: List(),
-      text: ""
+      lines: List(),
     }
 
     this.handleInputChange = e => {
       const input = e.target.value.toLowerCase()
-      if (inputChoices.indexOf(input) > -1 || this._isLink(input)) {
+      if (inputChoices.indexOf(input) > -1) {
         store.dispatch(addToQueue(`$ ${input}`));
         store.dispatch(addToQueue(filler));
-        if (this._isLink(input)) {
-          store.dispatch(addToQueue(links.get(input.split(':')[1])));
-        } else {
-          store.dispatch(addToQueue(dialogs.get(input)));
-        }
+        store.dispatch(addToQueue(dialogs.get(input)));
         e.target.value = "";
         store.dispatch(addToQueue(filler));
       }
     }
-
-    this.handleStateChange = () => {
-      this.setState({
-        history: store.getState().get('history', List())
-      });
-    }
-
-    this.interval = setInterval( () => {
-      const line = store.getState().getIn(['queue', 0]);
-      if (line !== undefined) {
-        this.setState({
-          text: this.state.text + line.charAt(this.state.text.length)
-        });
-        if (this.state.text === line) {
-          store.dispatch(updateHistory(line));
-          store.dispatch(removeFromQueue());
-          this.setState({
-            text: ""
-          });
-        }
-      }
-    }, 30)
   }
 
   componentDidMount() {
-    store.subscribe(this.handleStateChange);
     store.dispatch(addToQueue(dialogs.get('intro')));
     store.dispatch(addToQueue(filler));
+    this._startRenderingQueue();
   }
 
   componentWillUnmount() {
     clearInterval(this.interval);
   }
 
-  _isLink(input) {
-    return !!links.get(input.split(':')[1])
+  _startRenderingQueue() {
+    this.interval = setInterval( () => {
+      const line = store.getState().getIn(['queue', 0]);
+      if (line !== undefined) {
+        if (line === this.state.lines.last()) {
+          store.dispatch(removeFromQueue());
+          this.setState({
+            lines: this.state.lines.concat("")
+          });
+        } else {
+          const updatedLine = line.slice(0, this.state.lines.get(-1, "").length + 1);
+          this.setState({
+            lines: this.state.lines.set(-1, updatedLine)
+          });
+        }
+      }
+    }, 30)
   }
 
   render() {
     return(
       <div className="terminal">
-        <Terminal text={this.state.text}
-                  history={this.state.history}
+        <Terminal lines={this.state.lines}
                   onInputChange={this.handleInputChange} />
       </div>
     )

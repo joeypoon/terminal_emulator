@@ -19,8 +19,8 @@ module.exports = {
       exclude: /node_modules/,
       loader: 'react-hot!babel'
     }, {
-     test: /\.css$/,
-     loader: 'style!css!'
+      test: /\.css$/,
+      loader: 'style!css!'
    }]
   },
   resolve: {

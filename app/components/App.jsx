@@ -3,57 +3,7 @@ import Terminal from './Terminal';
 import { List, Map, fromJS } from 'immutable';
 import { store } from '../index';
 import { addToQueue, removeFromQueue, updateHistory } from '../action_creators';
-
-const inputChoices = [
-  'help', 'skills', 'experience', 'contact', 'links',
-  'open:linkName (eg. open:portfolio)'
-];
-
-const links = fromJS({
-  portfolio: "http://joeypoon.com/portfolio#portfolio",
-  resume: "http://joeypoon.com/resume/",
-  github: "https://github.com/joeypoon",
-  twitter: "https://twitter.com/joeyfpoon",
-  linkedin: "https://www.linkedin.com/in/joeypoon",
-  blog: "http://joeypoon.com/blog/"
-})
-
-const dialogs = fromJS({
-  intro: [
-    "Hi there, I'm Joey.",
-    "I write code for a living and for fun.",
-    "Type 'help' to learn more."
-  ],
-
-  help: [
-    "Available commands:",
-    `[ ${inputChoices.join(', ')} ]`
-  ],
-
-  skills: [
-    "$ npm install react angular",
-    "$ rails new restful_api",
-    "$ git commit -m 'git awesome.'"
-  ],
-
-  experience: [
-    "Erdos Miller:",
-    "Software Engineer (July 2015 - Current)",
-    "",
-    "The Iron Yard:",
-    "Backend Engineer (May 2015 - July 2015)",
-    "",
-    "University of Houston Downtown:",
-    "Software Developer (May 2015 - July 2015)",
-  ],
-
-  contact: [
-    "phone: 281-942-8891",
-    "email: joey@joeypoon.com"
-  ],
-
-  links: links.map((value, key) => `${key}: ${value}`)
-})
+import { inputChoices, links, dialogs, filler } from '../data';
 
 export default class App extends React.Component {
   constructor() {
@@ -66,19 +16,21 @@ export default class App extends React.Component {
     this.handleInputChange = e => {
       const input = e.target.value.toLowerCase()
       if (inputChoices.indexOf(input) > -1 || this._isLink(input)) {
-        store.dispatch(addToQueue(`$ ${input}`))
+        store.dispatch(addToQueue(`$ ${input}`));
+        store.dispatch(addToQueue(filler));
         if (this._isLink(input)) {
-          this._openLink(input)
+          store.dispatch(addToQueue(links.get(input.split(':')[1])));
         } else {
           store.dispatch(addToQueue(dialogs.get(input)));
         }
         e.target.value = "";
+        store.dispatch(addToQueue(filler));
       }
     }
 
     this.handleStateChange = () => {
       this.setState({
-        history: store.getState().get('history')
+        history: store.getState().get('history', List())
       });
     }
 
@@ -102,6 +54,7 @@ export default class App extends React.Component {
   componentDidMount() {
     store.subscribe(this.handleStateChange);
     store.dispatch(addToQueue(dialogs.get('intro')));
+    store.dispatch(addToQueue(filler));
   }
 
   componentWillUnmount() {
@@ -110,10 +63,6 @@ export default class App extends React.Component {
 
   _isLink(input) {
     return !!links.get(input.split(':')[1])
-  }
-
-  _openLink(input) {
-    window.open(links.get(input.split(':')[1]));
   }
 
   render() {

@@ -10,7 +10,9 @@ export default class Link extends React.Component {
 
   render() {
     return <div>
-      {this.props.line.replace(this._getLink(), '')}
+      <span>
+        {this.props.line.replace(this._getLink(), '')}
+      </span>
       <a href={this._getLink()} target="_blank">
         {this._getLink()}
       </a>

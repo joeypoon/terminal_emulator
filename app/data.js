@@ -6,18 +6,17 @@ export const MAX_LINES =  screen.width > 767 ? 15 : 10;
 
 export const inputChoices = List.of(
   'help', 'skills', 'experience', 'contact',
-  'portfolio', 'resume', 'blog', 'social'
+  'portfolio', 'resume', 'github', 'twitter',
+  'linkedin', 'blog'
 );
 
 export const links = fromJS({
   portfolio: "http://joeypoon.com/portfolio#portfolio",
   resume: "http://joeypoon.com/resume/",
   blog: "http://joeypoon.com/blog/",
-  social: {
-    github: "https://github.com/joeypoon",
-    twitter: "https://twitter.com/joeyfpoon",
-    linkedin: "https://www.linkedin.com/in/joeypoon"
-  }
+  github: "https://github.com/joeypoon",
+  twitter: "https://twitter.com/joeyfpoon",
+  linkedin: "https://www.linkedin.com/in/joeypoon"
 });
 
 export const dialogs = fromJS({
@@ -56,6 +55,8 @@ export const dialogs = fromJS({
 
   portfolio: [ links.get('portfolio') ],
   resume: [ links.get('resume') ],
-  blog: [ links.get('blog') ],
-  social: links.get('social').map((value, key) => `${key}: ${value}`)
+  github: [ links.get('github') ],
+  twitter: [ links.get('twitter') ],
+  linkedin: [ links.get('linkedin') ],
+  blog: [ links.get('blog') ]
 });

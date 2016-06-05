@@ -1,5 +1,5 @@
 import { MAX_LINES, inputChoices, filler, dialogs } from './data';
-import { setInput, addToQueue } from './action_creators';
+import { addToQueue, updateLastActivity } from './action_creators';
 import { List } from 'immutable';
 
 export default store => next => action => {
@@ -10,6 +10,9 @@ export default store => next => action => {
     store.dispatch(addToQueue(dialogs.get(input)));
     store.dispatch(addToQueue(filler));
     action.event.target.value = "";
+  }
+  if (action.type !== 'UPDATE_LAST_ACTIVITY') {
+    store.dispatch(updateLastActivity());
   }
   return next(action);
 }

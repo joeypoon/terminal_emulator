@@ -64,4 +64,13 @@ describe('reducer', () => {
     }));
   });
 
+  it('handles update last activity', () => {
+    const initialState = Map();
+    const action = {
+      type: 'UPDATE_LAST_ACTIVITY'
+    };
+    const nextState = reducer(initialState, action);
+    expect(nextState.get('lastActivity')).to.be.ok;
+  });
+
 });

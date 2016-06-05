@@ -22,6 +22,8 @@ export default function reducer(state = INITIAL_STATE, action) {
       return state.update('queue', List(), (queue) => queue.concat(action.lines));
     case 'REMOVE_FROM_QUEUE':
       return state.update('queue', List(), (queue) => queue.shift());
+    case 'UPDATE_LAST_ACTIVITY':
+      return state.set('lastActivity', new Date * 1)
   }
   return state;
 }

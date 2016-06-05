@@ -26,6 +26,12 @@ export function addToQueue(lines) {
 
 export function removeFromQueue() {
   return {
-    type: 'REMOVE_FROM_QUEUE',
+    type: 'REMOVE_FROM_QUEUE'
+  }
+}
+
+export function updateLastActivity() {
+  return {
+    type: 'UPDATE_LAST_ACTIVITY'
   }
 }

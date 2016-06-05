@@ -28,6 +28,9 @@ export default class AppBase extends React.Component {
           this.props.updateLastLine();
         }
       }
+      if (new Date * 1 - this.props.lastActivity > 8000) {
+        this.props.addToQueue("Type 'help' for options.");
+      }
     }, 30)
   }
 
@@ -44,7 +47,8 @@ export default class AppBase extends React.Component {
 function mapStateToProps(state) {
   return {
     queue: state.get('queue', List()),
-    lines: state.get('lines', List())
+    lines: state.get('lines', List()),
+    lastActivity: state.get('lastActivity', new Date * 1)
   }
 }
 

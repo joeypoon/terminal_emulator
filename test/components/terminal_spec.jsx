@@ -3,6 +3,7 @@ import Terminal from '../../app/components/Terminal';
 import Line from '../../app/components/Line';
 import { List } from 'immutable';
 import React from 'react';
+import { store } from '../../app/store';
 import { renderIntoDocument,
   findRenderedDOMComponentWithTag,
   scryRenderedComponentsWithType,
@@ -13,7 +14,8 @@ describe('Terminal', function() {
 
   beforeEach(function() {
     this.invoked;
-    this.props = {lines: List.of("test", "test2"), onInputChange: () => this.invoked = true};
+    const lines = List(["I am a test.", "I am a test."]);
+    this.props = {onInputChange: () => this.invoked = true, lines: lines};
     this.component = renderIntoDocument(<Terminal {...this.props} />);
   });
 

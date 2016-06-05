@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import Line from './Line';
-import { filler, MAX_LINES } from '../data';
 
 export default class Terminal extends React.Component {
 
@@ -17,7 +16,7 @@ export default class Terminal extends React.Component {
 
   render() {
     return(
-      <div>
+      <div className="terminal">
         {
           this.props.lines.map((line, index) => {
             return <Line key={line + index} line={line} />

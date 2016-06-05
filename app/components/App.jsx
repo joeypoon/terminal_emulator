@@ -1,21 +1,15 @@
 import React from 'react';
 import Terminal from './Terminal';
-import { List, Map, fromJS } from 'immutable';
-import { store } from '../index';
-import { addToQueue, removeFromQueue } from '../action_creators';
-import { inputChoices, links, dialogs, filler, MAX_LINES } from '../data';
+import { List } from 'immutable';
+import * as actionCreators from '../action_creators';
+import { filler, MAX_LINES, dialogs } from '../data';
+import { connect } from 'react-redux';
 
-export default class App extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      lines: List()
-    }
-  }
+export default class AppBase extends React.Component {
 
   componentDidMount() {
-    store.dispatch(addToQueue(dialogs.get('intro')));
-    store.dispatch(addToQueue(filler));
+    this.props.addToQueue(dialogs.get('intro'));
+    this.props.addToQueue(filler);
     this._startRenderingQueue();
   }
 
@@ -23,59 +17,35 @@ export default class App extends React.Component {
     clearInterval(this.interval);
   }
 
-  _verifyLinesLength() {
-    if (this.state.lines.size > MAX_LINES) {
-      this.setState({
-        lines: this.state.lines.slice(-MAX_LINES)
-      });
-    }
-  }
-
-  _startNewLine() {
-    store.dispatch(removeFromQueue());
-    this.setState({
-      lines: this.state.lines.concat("")
-    });
-  }
-
-  _appendToLastLine(line) {
-    const updatedLine = line.slice(0, this.state.lines.get(-1, "").length + 1);
-    this.setState({
-      lines: this.state.lines.set(-1, updatedLine)
-    });
-  }
-
   _startRenderingQueue() {
     this.interval = setInterval( () => {
-      const line = store.getState().getIn(['queue', 0]);
-      if (line !== undefined) {
-        if (line === this.state.lines.last()) {
-          this._startNewLine();
+      const nextLine = this.props.queue.first();
+      if (nextLine !== undefined) {
+        if (nextLine === this.props.lines.last()) {
+          this.props.startNewLine();
+          this.props.removeFromQueue();
         } else {
-          this._appendToLastLine(line);
+          this.props.updateLastLine();
         }
       }
-      this._verifyLinesLength()
     }, 30)
-  }
-
-  handleInputChange(e) {
-    const input = e.target.value.toLowerCase()
-    if (inputChoices.indexOf(input) > -1) {
-      store.dispatch(addToQueue(`$ ${input}`));
-      store.dispatch(addToQueue(filler));
-      store.dispatch(addToQueue(dialogs.get(input)));
-      store.dispatch(addToQueue(filler));
-      e.target.value = "";
-    }
   }
 
   render() {
     return(
-      <div className="terminal">
-        <Terminal lines={this.state.lines}
-                  onInputChange={this.handleInputChange} />
+      <div>
+        <Terminal lines={this.props.lines}
+                  onInputChange={this.props.setInput} />
       </div>
     )
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    queue: state.get('queue', List()),
+    lines: state.get('lines', List())
+  }
+}
+
+export const App = connect(mapStateToProps, actionCreators)(AppBase);

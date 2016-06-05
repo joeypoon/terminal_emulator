@@ -1,7 +1,19 @@
-export function updateHistory(line) {
+export function setInput(event) {
   return {
-    type: 'UPDATE_HISTORY',
-    line
+    type: 'SET_INPUT',
+    event
+  }
+}
+
+export function startNewLine() {
+  return {
+    type: 'START_NEW_LINE'
+  }
+}
+
+export function updateLastLine() {
+  return {
+    type: 'UPDATE_LAST_LINE'
   }
 }
 

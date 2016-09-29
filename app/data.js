@@ -32,14 +32,18 @@ export const dialogs = fromJS({
   ],
 
   skills: [
-    "$ npm install react redux angular",
+    "$ npm install react redux angular2 typings",
+    "$ react-native init Mobile",
     "$ rails new restful_api",
     "$ git commit -m 'git awesome.'"
   ],
 
   experience: [
+    "National Oilwell Varco",
+    "Web Developer (August 2016 - Current)",
+    filler,
     "Erdos Miller:",
-    "Software Engineer (July 2015 - Current)",
+    "Software Engineer (July 2015 - July 2016)",
     filler,
     "The Iron Yard:",
     "Backend Engineer (May 2015 - July 2015)",

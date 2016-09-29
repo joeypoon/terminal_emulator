@@ -1,27 +1,13 @@
 html, body {
   height: 100%;
   font-family: "Lucida Console", "Lucida Sans Typewriter", "monaco", "Bitstream Vera Sans Mono", "monospace";
-}
-
-#app {
-  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.app-container: {
-  height: 100%;
-  position: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .terminal {
-  position: flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 400px;
+  width: 450px;
   color: #2c3e50;
   font-size: 1.2em;
 }
@@ -42,7 +28,7 @@ html, body {
 @media (max-width: 767px) {
 
   .terminal {
-    min-width: 300px;
+    width: 300px;
     font-size: 0.9em;
   }
 }
@@ -50,7 +36,7 @@ html, body {
 @media (max-width: 320px) {
   .terminal {
     font-size: 0.8em;
-    min-width: 250px;
+    width: 250px;
   }
 }
 

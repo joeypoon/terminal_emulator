@@ -9,8 +9,6 @@ var hotModuleReplacementPlugin = new webpack.HotModuleReplacementPlugin();
 
 module.exports = {
   entry: [
-    'webpack-dev-server/client?http://localhost:8080',
-    'webpack/hot/only-dev-server',
     './app/index.jsx'
   ],
   module: {

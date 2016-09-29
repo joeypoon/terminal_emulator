@@ -22,7 +22,7 @@ export default class Terminal extends React.Component {
             return <Line key={line + index} line={line} />
           })
         }
-        <div class="clearfix"></div>
+        <div className="clearfix"></div>
         $<input type="text"
                className="inputBox"
                ref="inputBox"

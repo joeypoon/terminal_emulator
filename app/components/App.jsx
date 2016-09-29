@@ -20,6 +20,6 @@ export default class App extends Component {
   }
 
   render() {
-    return <div className="app-container">{ this.renderContent() }</div>;
+    return <div>{ this.renderContent() }</div>;
   }
 }

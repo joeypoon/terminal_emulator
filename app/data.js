@@ -12,7 +12,7 @@ export const inputChoices = List.of(
 
 export const links = fromJS({
   portfolio: "http://kaijudev.com/",
-  resume: "http://joeypoon.com/resume.pdf",
+  resume: "http://kaijudev.com/resume.pdf",
   blog: "https://medium.com/@joeypoon",
   github: "https://github.com/joeypoon",
   twitter: "https://twitter.com/joeyfpoon",
@@ -32,7 +32,7 @@ export const dialogs = fromJS({
   ],
 
   skills: [
-    "$ npm install react redux angular2 typings",
+    "$ npm install react @angular/core",
     "$ react-native init MobileApp",
     "$ node server.js",
     "$ git commit -m 'git awesome.'"

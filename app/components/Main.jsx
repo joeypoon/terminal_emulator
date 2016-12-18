@@ -41,7 +41,7 @@ export default class MainBase extends Component {
           this.props.updateLastLine();
         }
       }
-      if (new Date * 1 - this.props.lastActivity > 5000) {
+      if (new Date * 1 - this.props.lastActivity > 8000) {
         if (this._getCurrentLine() !== help)
           this.props.addToQueue(help);
       }
@@ -50,7 +50,7 @@ export default class MainBase extends Component {
 
   render() {
     return(
-      <div>
+      <div className="flex-center terminal-container">
         <Terminal lines={this.props.lines}
           onInputChange={this.props.setInput} />
       </div>

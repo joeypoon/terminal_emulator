@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Terminal from './Terminal';
 import { List } from 'immutable';
 import * as actionCreators from '../action_creators';
-import { filler, MAX_LINES, dialogs } from '../data';
+import { filler, dialogs } from '../data';
 import { connect } from 'react-redux';
 
 const help = "Type 'help' for options.";
@@ -18,6 +18,11 @@ export default class MainBase extends Component {
     clearInterval(this.interval);
   }
 
+  _scrollToBottom() {
+    var terminal = document.getElementsByClassName("terminal")[0];
+    terminal.scrollTop = terminal.scrollHeight;
+  }
+
   _getCurrentLine() {
     const lines = this.props.lines;
     // last line is always an empty string
@@ -28,6 +33,7 @@ export default class MainBase extends Component {
     this.interval = setInterval( () => {
       const nextLine = this.props.queue.first();
       if (nextLine !== undefined) {
+        this._scrollToBottom();
         if (nextLine === this.props.lines.last()) {
           this.props.startNewLine();
           this.props.removeFromQueue();

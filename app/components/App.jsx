@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-import Loader from './Loader';
 import { Main } from './Main';
 
 export default class App extends Component {
@@ -14,9 +13,7 @@ export default class App extends Component {
   }
 
   renderContent() {
-    if (this.state.ready)
-      return <Main />;
-    return <Loader />
+    return <Main />;
   }
 
   render() {

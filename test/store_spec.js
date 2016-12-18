@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import makeStore from '../app/store';
 import { Map, List } from 'immutable';
 import { addToQueue, setInput } from '../app/action_creators';
-import { dialogs, filler, MAX_LINES } from '../app/data';
+import { dialogs, filler } from '../app/data';
 
 describe('store', function() {
 

@@ -2,7 +2,7 @@ import { List, fromJS } from 'immutable';
 
 export const filler = '-';
 
-export const MAX_LINES =  screen.width > 767 ? 15 : 10;
+// export const MAX_LINES =  screen.width > 767 ? 15 : 10;
 
 export const inputChoices = List.of(
   'help', 'skills', 'experience', 'contact',
@@ -11,9 +11,9 @@ export const inputChoices = List.of(
 );
 
 export const links = fromJS({
-  portfolio: "http://joeypoon.com/portfolio#portfolio",
-  resume: "http://joeypoon.com/resume/",
-  blog: "http://joeypoon.com/blog/",
+  portfolio: "http://kaijudev.com/",
+  resume: "http://joeypoon.com/resume.pdf",
+  blog: "https://medium.com/@joeypoon",
   github: "https://github.com/joeypoon",
   twitter: "https://twitter.com/joeyfpoon",
   linkedin: "https://www.linkedin.com/in/joeypoon"
@@ -33,28 +33,28 @@ export const dialogs = fromJS({
 
   skills: [
     "$ npm install react redux angular2 typings",
-    "$ react-native init Mobile",
-    "$ rails new restful_api",
+    "$ react-native init MobileApp",
+    "$ node server.js",
     "$ git commit -m 'git awesome.'"
   ],
 
   experience: [
     "National Oilwell Varco",
-    "Web Developer (August 2016 - Current)",
+    "Software Engineer (August 2016 - Current)",
     filler,
     "Erdos Miller:",
     "Software Engineer (July 2015 - July 2016)",
     filler,
-    "The Iron Yard:",
-    "Backend Engineer (May 2015 - July 2015)",
-    filler,
     "University of Houston Downtown:",
     "Software Developer (May 2015 - July 2015)",
+    "Financial Aid Counselor II (2014 - April 2015)",
+    "Financial Aid Counselor I (2012 - 2014)",
+    "Student Assistant (2010 - 2012)"
   ],
 
   contact: [
     "phone: 281-942-8891",
-    "email: joey@joeypoon.com"
+    "email: joey@kaijudev.com"
   ],
 
   portfolio: [ links.get('portfolio') ],

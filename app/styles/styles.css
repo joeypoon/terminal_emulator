@@ -7,9 +7,11 @@ html, body {
 }
 
 .terminal {
+  height: 450px;
   width: 450px;
   color: #2c3e50;
   font-size: 1.2em;
+  overflow-y: scroll;
 }
 
 .inputBox {

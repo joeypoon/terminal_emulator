@@ -12,7 +12,7 @@ function nextLineState(lines, queue) {
 export default function reducer(state = INITIAL_STATE, action) {
   switch(action.type) {
     case 'START_NEW_LINE':
-      return state.update('lines', List(), (lines) => lines.concat("").takeLast(MAX_LINES));
+      return state.update('lines', List(), (lines) => lines.concat(""));
     case 'UPDATE_LAST_LINE':
       return state.update('lines', List(), (lines) => {
         return lines.pop()

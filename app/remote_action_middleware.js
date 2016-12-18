@@ -1,4 +1,4 @@
-import { MAX_LINES, inputChoices, filler, dialogs } from './data';
+import { inputChoices, filler, dialogs } from './data';
 import { addToQueue, updateLastActivity } from './action_creators';
 import { List } from 'immutable';
 

@@ -5,6 +5,8 @@ import * as actionCreators from '../action_creators';
 import { filler, MAX_LINES, dialogs } from '../data';
 import { connect } from 'react-redux';
 
+const help = "Type 'help' for options.";
+
 export default class MainBase extends Component {
   componentDidMount() {
     this.props.addToQueue(dialogs.get('intro'));
@@ -14,6 +16,12 @@ export default class MainBase extends Component {
 
   componentWillUnmount() {
     clearInterval(this.interval);
+  }
+
+  _getCurrentLine() {
+    const lines = this.props.lines;
+    // last line is always an empty string
+    return lines.get(lines.size - 2);
   }
 
   _startRenderingQueue() {
@@ -27,8 +35,9 @@ export default class MainBase extends Component {
           this.props.updateLastLine();
         }
       }
-      if (new Date * 1 - this.props.lastActivity > 8000) {
-        this.props.addToQueue("Type 'help' for options.");
+      if (new Date * 1 - this.props.lastActivity > 5000) {
+        if (this._getCurrentLine() !== help)
+          this.props.addToQueue(help);
       }
     }, 30)
   }

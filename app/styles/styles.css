@@ -26,7 +26,6 @@ html, body {
 }
 
 @media (max-width: 767px) {
-
   .terminal {
     width: 300px;
     font-size: 0.9em;
